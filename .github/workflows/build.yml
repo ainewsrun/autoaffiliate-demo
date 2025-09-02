@@ -9,10 +9,13 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
         with:
-          python-version: "3.x"
+          python-version: '3.x'
 
       # Unzip the AutoAffiliate bundle into a working directory; prefer fixed zip but fallback to original
       - name: Unzip bundle
@@ -43,12 +46,12 @@ jobs:
           rm -rf docs
           mv site/docs docs
 
-       # Upload artifact for GitHub Pages
-       - name: Upload pages artifact
-         uses: actions/upload-pages-artifact@v1
-          with:
-           path: docs
- 
-       # Deploy to GitHub Pages
+      # Upload artifact for GitHub Pages
+      - name: Upload pages artifact
+        uses: actions/upload-pages-artifact@v1
+        with:
+          path: docs
+
+      # Deploy to GitHub Pages
       - name: Deploy to GitHub Pages
         uses: actions/deploy-pages@v1
