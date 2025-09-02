@@ -46,12 +46,12 @@ jobs:
           rm -rf docs
           mv site/docs docs
 
-      # Upload artifact for GitHub Pages
+      # Upload artifact for GitHub Pages using the latest v4 action
       - name: Upload pages artifact
-        uses: actions/upload-pages-artifact@v1
+        uses: actions/upload-pages-artifact@v4
         with:
           path: docs
 
-      # Deploy to GitHub Pages
+      # Deploy to GitHub Pages using the v4 action (latest major version)
       - name: Deploy to GitHub Pages
-        uses: actions/deploy-pages@v1
+        uses: actions/deploy-pages@v4
