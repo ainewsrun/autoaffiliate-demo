@@ -1,0 +1,37 @@
+name: Build & Deploy (cron)
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 */6 * * *"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+      # Unzip the AutoAffiliate Lite bundle into a working directory
+      - name: Unzip bundle
+        run: unzip AutoAffiliate_Lite.zip -d site
+      # Install required Python dependencies from the extracted bundle
+      - name: Install deps
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r site/requirements.txt
+      # Build the static site using the provided script
+      - name: Build site
+        env:
+          SITE_BASE_URL: ${{ secrets.SITE_BASE_URL }}
+        run: |
+          cd site
+          python scripts/generate.py
+      # Copy the generated docs from the extracted bundle to the root docs directory
+      - name: Copy docs
+        run: |
+          rsync -r site/docs/ ./docs/
+      # Placeholder step to indicate deployment; GitHub Pages will serve from /docs on main
+      - name: Deploy (Pages via docs/)
+        run: echo "Done. Set GitHub Pages to serve from /docs on main branch."
